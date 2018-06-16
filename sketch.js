@@ -21,7 +21,7 @@ function draw() {
 }
 
 function drawLeftBuffer() {
-    leftBuffer.fill(random(0,1),random(100,255),random(1,100));
+    leftBuffer.fill(random(0,255),random(0,255),random(0,255));
     leftBuffer.ellipse(mouseX / 2, mouseY / 2, 50, 50);
 }
 
