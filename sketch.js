@@ -26,9 +26,9 @@ function drawLeftBuffer() {
 }
 
 function process_and_draw_image() {
-  var canvas = document.getElementById("defaultCanvas0");
-  var img    = {base64: canvas.toDataURL("image/png")};
-  httpPost(url, img, function(result) {
+  var canvas2 = document.getElementsByTagName("canvas")[1];
+  var payload = {base64: canvas2.toDataURL("image/png")};
+  httpPost(url, payload, function(result) {
     var blob = b64toBlob(result, 'image/png');
     var blobUrl = URL.createObjectURL(blob);
     loadImage(blobUrl, function(img) {
