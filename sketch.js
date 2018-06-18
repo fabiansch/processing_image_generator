@@ -29,7 +29,8 @@ function process_and_draw_image() {
   var canvas2 = document.getElementsByTagName("canvas")[1];
   var payload = {base64: canvas2.toDataURL("image/png")};
   httpPost(url, payload, function(result) {
-    var blob = b64toBlob(result, 'image/png');
+    var base64 = JSON.parse(result)['base64'];
+    var blob = b64toBlob(base64, 'image/png');
     var blobUrl = URL.createObjectURL(blob);
     loadImage(blobUrl, function(img) {
       image(img, 400, 0);
