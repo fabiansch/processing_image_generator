@@ -9,5 +9,5 @@ and hit RUN.
 
 *1 server should:
 
-- expect ``{'base64': ['MIMETYPE;base64,']IMAGE_BASE_64_DATA_STRING', ['frame_count': int§]}`` as input
+- expect ``{'base64': ['MIMETYPE;base64,']IMAGE_BASE_64_DATA_STRING', 'base64_old': ['MIMETYPE;base64,']IMAGE_OLD_BASE_64_DATA_STRING', ['frame_count': int§]}`` as input
 - respond with ``{'base64': IMAGE_PNG_BASE_64_DATA_STRING}``

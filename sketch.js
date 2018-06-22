@@ -1,6 +1,8 @@
 var leftBuffer;
-var rightBuffer;
 var frame_rate;
+
+var canvas_left;
+var canvas_left_stored;
 
 function setup() {
   frameRate(1)
@@ -8,12 +10,18 @@ function setup() {
   createCanvas(800, 400);
 
   leftBuffer = createGraphics(400, 400);
-  document.getElementsByTagName("canvas")[1].width /= 2;
-  document.getElementsByTagName("canvas")[1].height /= 2;
+  canvas_left = document.getElementsByTagName("canvas")[1];
+  canvas_left.width /= 2;
+  canvas_left.height /= 2;
+
+  storedBuffer = createGraphics(400, 400);
+  storedBuffer.background(255,255,255);
+  canvas_left_stored = document.getElementsByTagName("canvas")[2];
+  canvas_left_stored.width /= 2;
+  canvas_left_stored.height /= 2;
 
   emptyBuffer = createGraphics(400, 400);
   emptyBuffer.background(255,255,255);
-
 }
 
 var url = undefined;
@@ -32,8 +40,11 @@ function drawLeftBuffer() {
 }
 
 function process_and_draw_image() {
-  var canvas2 = document.getElementsByTagName("canvas")[1];
-  var payload = {'base64': canvas2.toDataURL("image/png"), 'frame_count': frameCount};
+  var payload = { 'base64':      canvas_left.toDataURL("image/png"),
+                  'base64_old':  canvas_left_stored.toDataURL("image/png"),
+                  'frame_count': frameCount };
+  storedBuffer.image(leftBuffer, 0, 0);
+
   httpPost(url, payload, function(result) {
     var base64 = JSON.parse(result)['base64'];
     var blob = b64toBlob(base64, 'image/png');
