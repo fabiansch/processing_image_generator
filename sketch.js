@@ -8,6 +8,12 @@ function setup() {
   createCanvas(800, 400);
 
   leftBuffer = createGraphics(400, 400);
+  document.getElementsByTagName("canvas")[1].width /= 2;
+  document.getElementsByTagName("canvas")[1].height /= 2;
+
+  emptyBuffer = createGraphics(400, 400);
+  emptyBuffer.background(255,255,255);
+
 }
 
 var url = undefined;
@@ -22,7 +28,7 @@ function draw() {
 
 function drawLeftBuffer() {
     leftBuffer.fill(random(0,255),random(0,255),random(0,255));
-    leftBuffer.ellipse(mouseX / 2, mouseY / 2, 50, 50);
+    leftBuffer.ellipse(mouseX, mouseY, 50, 50);
 }
 
 function process_and_draw_image() {
@@ -33,6 +39,7 @@ function process_and_draw_image() {
     var blob = b64toBlob(base64, 'image/png');
     var blobUrl = URL.createObjectURL(blob);
     loadImage(blobUrl, function(img) {
+      // image(emptyBuffer, 400, 0);
       image(img, 400, 0);
     });
   });
