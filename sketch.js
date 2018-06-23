@@ -2,7 +2,7 @@ var leftBuffer;
 var frame_rate;
 
 var canvas_left;
-var canvas_left_stored;
+var canvas_left_data_url_stored;
 
 function setup() {
   frameRate(1)
@@ -14,12 +14,6 @@ function setup() {
   canvas_left.width /= 2;
   canvas_left.height /= 2;
 
-  storedBuffer = createGraphics(400, 400);
-  storedBuffer.background(255,255,255);
-  canvas_left_stored = document.getElementsByTagName("canvas")[2];
-  canvas_left_stored.width /= 2;
-  canvas_left_stored.height /= 2;
-
   emptyBuffer = createGraphics(400, 400);
   emptyBuffer.background(255,255,255);
 }
@@ -28,6 +22,7 @@ var url = undefined;
 
 function draw() {
   if(url != undefined) {
+    canvas_left_data_url_stored = canvas_left.toDataURL("image/png");
     drawLeftBuffer();
     image(leftBuffer, 0, 0);
     process_and_draw_image();
@@ -41,9 +36,8 @@ function drawLeftBuffer() {
 
 function process_and_draw_image() {
   var payload = { 'base64':      canvas_left.toDataURL("image/png"),
-                  'base64_old':  canvas_left_stored.toDataURL("image/png"),
+                  'base64_old':  canvas_left_data_url_stored,
                   'frame_count': frameCount };
-  storedBuffer.image(leftBuffer, 0, 0);
 
   httpPost(url, payload, function(result) {
     var base64 = JSON.parse(result)['base64'];
