@@ -18,10 +18,11 @@ function setup() {
   emptyBuffer.background(255,255,255);
 }
 
-var url = undefined;
+var url_preprocessor = undefined;
+var url_processor = undefined;
 
 function draw() {
-  if(url != undefined) {
+  if(url_processor != undefined) {
     canvas_left_data_url_stored = canvas_left.toDataURL("image/png");
     drawLeftBuffer();
     image(leftBuffer, 0, 0);
@@ -37,9 +38,11 @@ function drawLeftBuffer() {
 function process_and_draw_image() {
   var payload = { 'base64':      canvas_left.toDataURL("image/png"),
                   'base64_old':  canvas_left_data_url_stored,
-                  'frame_count': frameCount };
+                  'frame_count': frameCount,
+                  'image_processor_url': url_processor };
 
-  httpPost(url, payload, function(result) {
+  receiver = url_preprocessor != "" ? url_preprocessor : url_processor;
+  httpPost(receiver, payload, function(result) {
     var base64 = JSON.parse(result)['base64'];
     var blob = b64toBlob(base64, 'image/png');
     var blobUrl = URL.createObjectURL(blob);
@@ -68,8 +71,8 @@ function buttonClick() {
   console.log("buttonClick");
   var frame_rate = float(document.getElementById("frame_rate").value);
   set_frame_rate(frame_rate);
-  url = document.getElementById("url").value;
-
+  url_preprocessor = document.getElementById("url_preprocessor").value;
+  url_processor    = document.getElementById("url_processor").value;
 }
 
 function b64toBlob(b64Data, contentType, sliceSize) {
