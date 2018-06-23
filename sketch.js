@@ -20,6 +20,7 @@ function setup() {
 
 var url_preprocessor = undefined;
 var url_processor = undefined;
+var process_time = undefined;
 
 function draw() {
   if(url_processor != undefined) {
@@ -39,7 +40,8 @@ function process_and_draw_image() {
   var payload = { 'base64':      canvas_left.toDataURL("image/png"),
                   'base64_old':  canvas_left_data_url_stored,
                   'frame_count': frameCount,
-                  'image_processor_url': url_processor };
+                  'image_processor_url': url_processor,
+                  'minimum_process_time': process_time };
 
   receiver = url_preprocessor != "" ? url_preprocessor : url_processor;
   httpPost(receiver, payload, function(result) {
@@ -73,6 +75,7 @@ function buttonClick() {
   set_frame_rate(frame_rate);
   url_preprocessor = document.getElementById("url_preprocessor").value;
   url_processor    = document.getElementById("url_processor").value;
+  process_time     = document.getElementById("process_time").value;
 }
 
 function b64toBlob(b64Data, contentType, sliceSize) {
